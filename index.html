@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>टिक टैक ग्लो - मोबाइल के खिलाफ</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Rozha+One&family=Yatra+One&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="container">
+        <!-- Start Screen / Setup Profile -->
+        <div id="start-screen" class="card fade-in">
+            <h1 class="glow-text">टिक टैक ग्लो</h1>
+            <p class="subtitle">मोबाइल के खिलाफ मुकाबला</p>
+
+            <!-- First Time Profile Creation -->
+            <div id="profile-creation" class="form-container">
+                <p class="form-instruction">खेलने के लिए कृपया अपना नाम दर्ज करें:</p>
+                <div class="input-group">
+                    <input type="text" id="player-name-input" placeholder="अपना नाम लिखें..." maxlength="15">
+                </div>
+            </div>
+
+            <!-- Profile Dashboard (Hidden on first load) -->
+            <div id="profile-dashboard" class="dashboard-box hidden">
+                <h3 id="welcome-back-msg">नमस्ते, खिलाड़ी!</h3>
+                <div class="career-stats">
+                    <div class="stat-card">
+                        <span class="stat-val" id="stats-played">0</span>
+                        <span class="stat-lbl">कुल खेल</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-val" id="stats-won">0</span>
+                        <span class="stat-lbl">जीत</span>
+                    </div>
+                </div>
+                <button class="btn btn-text-small" id="btn-change-profile">नाम बदलें</button>
+            </div>
+
+            <!-- Difficulty Picker -->
+            <div class="difficulty-box">
+                <h3>स्तर चुनें:</h3>
+                <div class="difficulty-buttons">
+                    <button class="btn btn-sm btn-easy active" data-diff="easy">आसान</button>
+                    <button class="btn btn-sm btn-medium" data-diff="medium">मध्यम</button>
+                    <button class="btn btn-sm btn-hard" data-diff="hard">कठिन</button>
+                </div>
+            </div>
+
+            <!-- Giant Start Button -->
+            <button class="btn btn-giant btn-primary" id="btn-start-game">
+                <i class="fa-solid fa-play"></i> शुरू करें
+            </button>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="card hidden">
+            <!-- Scoreboard -->
+            <div class="scoreboard-row">
+                <div class="score-card player-x">
+                    <span class="p-symbol">X</span>
+                    <span class="p-name" id="game-p1-name">खिलाड़ी</span>
+                    <span class="p-score" id="score-player">0</span>
+                </div>
+                <div class="score-card vs-card">VS</div>
+                <div class="score-card player-o">
+                    <span class="p-symbol">O</span>
+                    <span class="p-name">मोबाइल</span>
+                    <span class="p-score" id="score-mobile">0</span>
+                </div>
+            </div>
+
+            <!-- Game Status / Turn Indicator -->
+            <div class="game-status" id="game-status">आपकी बारी</div>
+
+            <!-- Tic Tac Toe Grid -->
+            <div class="board-container">
+                <div class="board" id="board">
+                    <div class="cell" data-index="0"></div>
+                    <div class="cell" data-index="1"></div>
+                    <div class="cell" data-index="2"></div>
+                    <div class="cell" data-index="3"></div>
+                    <div class="cell" data-index="4"></div>
+                    <div class="cell" data-index="5"></div>
+                    <div class="cell" data-index="6"></div>
+                    <div class="cell" data-index="7"></div>
+                    <div class="cell" data-index="8"></div>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="game-controls">
+                <button class="btn btn-text" id="btn-quit-game">मुख्य मेनू</button>
+                <button class="btn btn-icon-small" id="btn-toggle-sound" title="ध्वनि चालू/बंद">
+                    <i class="fa-solid fa-volume-high"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Ask One More Game Dialog / Modal -->
+        <div id="modal-container" class="modal-overlay hidden">
+            <div class="modal card">
+                <h2 id="modal-title" class="glow-text">खेल समाप्त</h2>
+                <p id="modal-message">क्या आप एक और मैच खेलना चाहते हैं?</p>
+                <div class="modal-buttons">
+                    <button class="btn btn-primary" id="btn-modal-yes">हाँ, खेलें</button>
+                    <button class="btn btn-secondary" id="btn-modal-no">नहीं, बाहर निकलें</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
