@@ -7,7 +7,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Rozha+One&family=Yatra+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
     <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
@@ -20,60 +20,90 @@
             <h1 class="glow-text">टिक टैक ग्लो</h1>
             <p class="subtitle">मोबाइल के खिलाफ मुकाबला</p>
 
-            <!-- First Time Profile Creation -->
+            <!-- First Time Profile Creation (Step 1) -->
             <div id="profile-creation" class="form-container">
-                <p class="form-instruction">खेलने के लिए कृपया अपना नाम दर्ज करें:</p>
+                <p class="form-instruction">खेलने के लिए अपना नाम लिखें जी:</p>
                 <div class="input-group">
-                    <input type="text" id="player-name-input" placeholder="अपना नाम लिखें..." maxlength="15">
+                    <input type="text" id="player-name-input" placeholder="यहाँ अपना नाम लिखें..." maxlength="15">
                 </div>
+                <button class="btn btn-secondary" id="btn-skip-name" style="margin-top: 10px;">
+                    बिना नाम के खेलें
+                </button>
             </div>
 
             <!-- Profile Dashboard (Hidden on first load) -->
             <div id="profile-dashboard" class="dashboard-box hidden">
-                <h3 id="welcome-back-msg">नमस्ते, खिलाड़ी!</h3>
+                <h3 id="welcome-back-msg">नमस्ते जी!</h3>
                 <div class="career-stats">
                     <div class="stat-card">
                         <span class="stat-val" id="stats-played">0</span>
-                        <span class="stat-lbl">कुल खेल</span>
+                        <span class="stat-lbl">कुल खेले गए सेट</span>
                     </div>
                     <div class="stat-card">
                         <span class="stat-val" id="stats-won">0</span>
-                        <span class="stat-lbl">जीत</span>
+                        <span class="stat-lbl">आपके जीते सेट</span>
                     </div>
                 </div>
                 <button class="btn btn-text-small" id="btn-change-profile">नाम बदलें</button>
             </div>
 
-            <!-- Difficulty Picker -->
-            <div class="difficulty-box">
-                <h3>स्तर चुनें:</h3>
-                <div class="difficulty-buttons">
-                    <button class="btn btn-sm btn-easy active" data-diff="easy">आसान</button>
-                    <button class="btn btn-sm btn-medium" data-diff="medium">मध्यम</button>
-                    <button class="btn btn-sm btn-hard" data-diff="hard">कठिन</button>
-                </div>
-            </div>
-
-            <!-- Giant Start Button -->
+            <!-- Giant Start Button (Step 1 -> Step 2 transition) -->
             <button class="btn btn-giant btn-primary" id="btn-start-game">
                 <i class="fa-solid fa-play"></i> शुरू करें
             </button>
+
+            <!-- Difficulty Picker (Step 2 - Hidden by default) -->
+            <div id="difficulty-picker-screen" class="difficulty-picker-container hidden fade-in">
+                <h2 class="section-title">खेल का स्तर चुनें जी:</h2>
+                <div class="difficulty-options">
+                    <button class="btn btn-giant btn-easy" data-diff="easy">
+                        <i class="fa-solid fa-face-smile"></i> आसान स्तर
+                    </button>
+                    <button class="btn btn-giant btn-medium" data-diff="medium">
+                        <i class="fa-solid fa-face-meh"></i> सामान्य स्तर
+                    </button>
+                    <button class="btn btn-giant btn-hard" data-diff="hard">
+                        <i class="fa-solid fa-face-angry"></i> कठिन स्तर
+                    </button>
+                </div>
+                <button class="btn btn-text" id="btn-back-to-start">पीछे जाएँ</button>
+            </div>
         </div>
 
         <!-- Game Screen -->
         <div id="game-screen" class="card hidden">
-            <!-- Scoreboard -->
+            <!-- Career Sets Info (Top Bar) -->
+            <div class="career-set-tracker" id="career-set-tracker">
+                सेट स्कोर: आप <span id="career-sets-player">0</span> - <span id="career-sets-mobile">0</span> मोबाइल
+            </div>
+
+            <!-- Game Scoreboard (Inside current set) -->
             <div class="scoreboard-row">
                 <div class="score-card player-x">
                     <span class="p-symbol">X</span>
-                    <span class="p-name" id="game-p1-name">खिलाड़ी</span>
+                    <span class="p-name" id="game-p1-name">आप</span>
                     <span class="p-score" id="score-player">0</span>
                 </div>
-                <div class="score-card vs-card">VS</div>
+                <div class="score-card vs-card">
+                    <div class="set-round-title">गेम नंबर</div>
+                    <div class="set-round-num" id="current-game-number">1 / 5</div>
+                </div>
                 <div class="score-card player-o">
                     <span class="p-symbol">O</span>
                     <span class="p-name">मोबाइल</span>
                     <span class="p-score" id="score-mobile">0</span>
+                </div>
+            </div>
+
+            <!-- 5-Game Series Tracker (Visual Indicators) -->
+            <div class="set-visual-indicators">
+                <div class="indicator-title">इस सेट का स्कोर बोर्ड:</div>
+                <div class="round-indicators" id="round-indicators">
+                    <span class="dot" data-round="1">1</span>
+                    <span class="dot" data-round="2">2</span>
+                    <span class="dot" data-round="3">3</span>
+                    <span class="dot" data-round="4">4</span>
+                    <span class="dot" data-round="5">5</span>
                 </div>
             </div>
 
@@ -107,11 +137,17 @@
         <!-- Ask One More Game Dialog / Modal -->
         <div id="modal-container" class="modal-overlay hidden">
             <div class="modal card">
-                <h2 id="modal-title" class="glow-text">खेल समाप्त</h2>
-                <p id="modal-message">क्या आप एक और मैच खेलना चाहते हैं?</p>
+                <h2 id="modal-title" class="glow-text">सेट समाप्त</h2>
+                <p id="modal-message">क्या आप एक और सेट खेलना चाहते हैं जी?</p>
+                
+                <!-- Display Set Win/Loss Log inside modal -->
+                <div class="modal-set-summary" id="modal-set-summary">
+                    कुल स्कोर: आप 0 - 0 मोबाइल
+                </div>
+                
                 <div class="modal-buttons">
-                    <button class="btn btn-primary" id="btn-modal-yes">हाँ, खेलें</button>
-                    <button class="btn btn-secondary" id="btn-modal-no">नहीं, बाहर निकलें</button>
+                    <button class="btn btn-primary btn-giant" id="btn-modal-yes">हाँ, खेलें</button>
+                    <button class="btn btn-secondary btn-giant" id="btn-modal-no">बाहर निकलें</button>
                 </div>
             </div>
         </div>

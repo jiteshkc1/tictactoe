@@ -1,25 +1,25 @@
 :root {
     --bg-color: #0b0c10;
-    --card-bg: rgba(31, 40, 51, 0.45);
-    --border-color: rgba(102, 252, 241, 0.2);
+    --card-bg: rgba(27, 38, 59, 0.65); /* Higher visibility blue-gray */
+    --border-color: rgba(102, 252, 241, 0.3);
     --text-primary: #ffffff;
-    --text-secondary: #c5a880;
-    --accent-cyan: #66fcf1;
-    --accent-blue: #45f3ff;
-    --accent-purple: #9d4edd;
-    --accent-pink: #ff007f;
+    --text-secondary: #ffb703;
+    --accent-cyan: #4cc9f0;
+    --accent-blue: #4361ee;
+    --accent-purple: #7209b7;
+    --accent-pink: #f72585;
     --accent-gold: #ffb703;
-    --success: #2ec4b6;
-    --danger: #e63946;
-    --shadow-glow: 0 0 15px rgba(102, 252, 241, 0.5);
-    --shadow-pink: 0 0 15px rgba(255, 0, 127, 0.5);
+    --success: #4caf50;
+    --danger: #f44336;
+    --shadow-glow: 0 0 18px rgba(76, 201, 240, 0.7);
+    --shadow-pink: 0 0 18px rgba(247, 37, 133, 0.7);
 }
 
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Hind', 'Outfit', sans-serif;
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -42,96 +42,96 @@ body {
     height: 100%;
     z-index: -1;
     background-image: 
-        radial-gradient(circle at 20% 30%, rgba(157, 78, 221, 0.1) 0%, transparent 40%),
-        radial-gradient(circle at 80% 70%, rgba(102, 252, 241, 0.1) 0%, transparent 45%);
+        radial-gradient(circle at 20% 30%, rgba(114, 9, 183, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(76, 201, 240, 0.15) 0%, transparent 45%);
     background-size: cover;
 }
 
 .container {
-    width: 90%;
+    width: 92%;
     max-width: 480px;
-    margin: 20px auto;
+    margin: 15px auto;
     position: relative;
     z-index: 1;
 }
 
 .card {
     background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 20px;
-    padding: 30px 24px;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+    border: 2px solid var(--border-color); /* Thicker border */
+    border-radius: 24px;
+    padding: 35px 24px;
+    box-shadow: 0 10px 35px 0 rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .glow-text {
-    font-size: 2.6rem;
-    font-weight: 800;
-    letter-spacing: 2px;
-    background: linear-gradient(45deg, var(--accent-cyan), var(--accent-purple));
+    font-size: 3rem; /* Larger */
+    font-weight: 700;
+    letter-spacing: 1px;
+    background: linear-gradient(45deg, var(--accent-cyan), var(--accent-pink));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 30px rgba(102, 252, 241, 0.2);
+    text-shadow: 0 0 30px rgba(76, 201, 240, 0.3);
     margin-bottom: 5px;
 }
 
 .subtitle {
     color: var(--accent-gold);
-    font-size: 1.1rem;
+    font-size: 1.3rem; /* Larger */
     font-weight: 600;
-    letter-spacing: 2px;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
     display: inline-block;
-    border-bottom: 2px solid rgba(255, 183, 3, 0.3);
+    border-bottom: 2px solid rgba(255, 183, 3, 0.4);
     padding-bottom: 5px;
 }
 
 /* Forms and Inputs */
 .form-container {
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     text-align: left;
 }
 
 .form-instruction {
-    font-size: 0.95rem;
-    color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 8px;
-    padding-left: 4px;
+    font-size: 1.2rem; /* Larger font */
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 12px;
 }
 
 .input-group input {
     width: 100%;
-    padding: 14px 20px;
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 12px;
+    padding: 16px 22px; /* Bigger targets */
+    background: rgba(0, 0, 0, 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 14px;
     color: white;
-    font-size: 1rem;
+    font-size: 1.2rem;
+    font-weight: 600;
     outline: none;
     transition: all 0.3s ease;
 }
 
 .input-group input:focus {
     border-color: var(--accent-cyan);
-    box-shadow: 0 0 10px rgba(102, 252, 241, 0.3);
+    box-shadow: 0 0 12px rgba(76, 201, 240, 0.5);
 }
 
 /* Profile Dashboard */
 .dashboard-box {
-    background: rgba(0, 0, 0, 0.25);
-    border-radius: 15px;
-    padding: 15px;
+    background: rgba(0, 0, 0, 0.35);
+    border-radius: 18px;
+    padding: 18px;
     margin-bottom: 25px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 .dashboard-box h3 {
-    font-size: 1.1rem;
-    margin-bottom: 12px;
+    font-size: 1.4rem; /* Larger font */
+    margin-bottom: 15px;
     color: var(--accent-cyan);
+    font-weight: 700;
 }
 
 .career-stats {
@@ -142,61 +142,57 @@ body {
 }
 
 .stat-card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 10px;
-    padding: 8px 20px;
-    min-width: 90px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 10px 20px;
+    min-width: 110px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 .stat-val {
-    font-size: 1.4rem;
+    font-size: 1.8rem; /* Larger stats */
     font-weight: 700;
     color: white;
 }
 
 .stat-lbl {
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.5);
-    margin-top: 2px;
-}
-
-/* Difficulty Box */
-.difficulty-box {
-    margin-bottom: 30px;
-    padding: 15px;
-    border-radius: 15px;
-    background: rgba(0, 0, 0, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.03);
-}
-
-.difficulty-box h3 {
-    font-size: 0.95rem;
-    margin-bottom: 12px;
-    font-weight: 500;
+    font-size: 0.95rem; /* Larger text */
+    font-weight: 600;
     color: rgba(255, 255, 255, 0.7);
+    margin-top: 4px;
 }
 
-.difficulty-buttons {
+/* Section Title */
+.section-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--accent-cyan);
+}
+
+/* Difficulty Options container (Step 2) */
+.difficulty-picker-container {
+    margin-top: 10px;
+    padding: 20px 0;
+}
+
+.difficulty-options {
     display: flex;
-    gap: 10px;
-}
-
-.difficulty-buttons .btn-sm {
-    flex: 1;
-    margin-bottom: 0;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 20px;
 }
 
 /* Buttons */
 .btn {
     width: 100%;
-    padding: 14px 24px;
-    font-size: 1.05rem;
-    font-weight: 600;
-    border-radius: 12px;
+    padding: 16px 26px; /* Larger padding for senior-friendly sizes */
+    font-size: 1.2rem;
+    font-weight: 700;
+    border-radius: 14px;
     border: none;
     cursor: pointer;
     display: flex;
@@ -204,30 +200,14 @@ body {
     justify-content: center;
     gap: 12px;
     margin-bottom: 16px;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.btn-sm {
-    padding: 8px 12px;
-    font-size: 0.9rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: var(--text-primary);
-}
-
-.btn-sm.active {
-    background: var(--accent-gold);
-    color: #0b0c10;
-    font-weight: bold;
-    border-color: var(--accent-gold);
-    box-shadow: 0 0 10px rgba(255, 183, 3, 0.3);
+    transition: all 0.25s ease;
 }
 
 .btn-giant {
-    padding: 18px 30px;
-    font-size: 1.3rem;
+    padding: 20px 30px;
+    font-size: 1.35rem;
     border-radius: 16px;
-    letter-spacing: 1px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 .btn-primary {
@@ -237,44 +217,56 @@ body {
 }
 
 .btn-primary:hover {
-    transform: translateY(-3px);
+    transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(0, 242, 254, 0.6);
 }
 
 .btn-secondary {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.1);
     color: var(--text-primary);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
 .btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.18);
+}
+
+.btn-easy {
+    background: linear-gradient(135deg, #2ec4b6 0%, #0cbaba 100%);
+    color: white;
+}
+.btn-medium {
+    background: linear-gradient(135deg, #ffb703 0%, #fb8500 100%);
+    color: #0b0c10;
+}
+.btn-hard {
+    background: linear-gradient(135deg, #f72585 0%, #b5179e 100%);
+    color: white;
+}
+
+.btn-easy:hover, .btn-medium:hover, .btn-hard:hover {
     transform: translateY(-2px);
 }
 
 .btn-text {
     background: none;
     border: none;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.7);
     text-decoration: underline;
     cursor: pointer;
     padding: 8px;
-    font-size: 0.95rem;
-    margin-top: 10px;
-}
-
-.btn-text:hover {
-    color: var(--text-primary);
+    font-size: 1.1rem;
+    font-weight: 600;
 }
 
 .btn-text-small {
     background: none;
     border: none;
     color: var(--accent-cyan);
-    font-size: 0.8rem;
+    font-size: 0.95rem;
+    font-weight: 600;
     text-decoration: underline;
     cursor: pointer;
-    margin-top: 5px;
 }
 
 .btn-icon-small {
@@ -282,25 +274,33 @@ body {
     border: none;
     color: rgba(255, 255, 255, 0.5);
     cursor: pointer;
-    font-size: 1.1rem;
-    padding: 8px;
-    transition: color 0.2s;
+    font-size: 1.4rem;
+    padding: 10px;
 }
 
-.btn-icon-small:hover {
-    color: var(--text-primary);
+/* Career Score Row (Top Panel) */
+.career-set-tracker {
+    font-size: 1.3rem; /* Large font */
+    font-weight: 700;
+    color: var(--accent-gold);
+    background: rgba(255, 183, 3, 0.1);
+    border: 1px dashed var(--accent-gold);
+    border-radius: 12px;
+    padding: 8px 16px;
+    margin-bottom: 15px;
+    text-align: center;
 }
 
-/* Gameplay Screen Scoreboard */
+/* Gameplay Scoreboard */
 .scoreboard-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(0, 0, 0, 0.25);
-    border-radius: 15px;
-    padding: 12px 16px;
-    margin-bottom: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.35);
+    border-radius: 18px;
+    padding: 14px 18px;
+    margin-bottom: 15px;
+    border: 2px solid rgba(255, 255, 255, 0.08);
 }
 
 .score-card {
@@ -311,16 +311,26 @@ body {
 }
 
 .score-card.vs-card {
-    font-size: 1rem;
-    font-weight: 800;
+    flex: 1.2;
+    max-width: 120px;
+}
+
+.set-round-title {
+    font-size: 0.9rem;
+    font-weight: 600;
     color: var(--accent-gold);
-    max-width: 40px;
+    text-transform: uppercase;
+}
+
+.set-round-num {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: white;
 }
 
 .p-symbol {
-    font-size: 1.2rem;
+    font-size: 1.6rem;
     font-weight: 800;
-    margin-bottom: 4px;
 }
 
 .player-x .p-symbol {
@@ -334,8 +344,9 @@ body {
 }
 
 .p-name {
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.6);
+    font-size: 1rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
     max-width: 90px;
     white-space: nowrap;
     overflow: hidden;
@@ -343,36 +354,99 @@ body {
 }
 
 .p-score {
-    font-size: 1.5rem;
+    font-size: 2rem; /* Larger */
     font-weight: 700;
     margin-top: 4px;
 }
 
+/* Set Score indicators (1 to 5) */
+.set-visual-indicators {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 12px;
+    border-radius: 14px;
+    margin-bottom: 18px;
+}
+
+.indicator-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 8px;
+}
+
+.round-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.dot {
+    width: 32px; /* Bigger circular blocks */
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.6);
+    transition: all 0.3s ease;
+}
+
+.dot.win-p1 {
+    background: var(--accent-cyan);
+    box-shadow: 0 0 10px var(--accent-cyan);
+    border-color: var(--accent-cyan);
+    color: #0b0c10;
+}
+
+.dot.win-p2 {
+    background: var(--accent-pink);
+    box-shadow: 0 0 10px var(--accent-pink);
+    border-color: var(--accent-pink);
+    color: white;
+}
+
+.dot.tie {
+    background: var(--accent-gold);
+    box-shadow: 0 0 10px var(--accent-gold);
+    border-color: var(--accent-gold);
+    color: #0b0c10;
+}
+
+.dot.active-round {
+    transform: scale(1.2);
+    border-color: white;
+    color: white;
+    background: rgba(255, 255, 255, 0.25);
+}
+
 /* Turn status */
 .game-status {
-    font-size: 1.2rem;
-    font-weight: 600;
+    font-size: 1.4rem; /* Larger */
+    font-weight: 700;
     margin-bottom: 20px;
-    letter-spacing: 1px;
-    min-height: 26px;
+    min-height: 30px;
 }
 
 .game-status.turn-p1 {
     color: var(--accent-cyan);
-    text-shadow: 0 0 8px rgba(102, 252, 241, 0.3);
+    text-shadow: 0 0 8px rgba(76, 201, 240, 0.3);
 }
 
 .game-status.turn-p2 {
     color: var(--accent-pink);
-    text-shadow: 0 0 8px rgba(255, 0, 127, 0.3);
+    text-shadow: 0 0 8px rgba(247, 37, 133, 0.3);
 }
 
-/* Tic Tac Toe Grid */
+/* Tic Tac Toe Board */
 .board-container {
     position: relative;
     width: 100%;
     padding-bottom: 100%;
-    margin: 10px 0 25px 0;
+    margin: 5px 0 20px 0;
 }
 
 .board {
@@ -384,59 +458,47 @@ body {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    gap: 12px;
+    gap: 14px; /* Thicker gap */
 }
 
 .cell {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 2px solid rgba(255, 255, 255, 0.08); /* Thicker border */
+    border-radius: 20px;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 3.2rem;
+    font-size: 4rem; /* Extra large indicators */
     font-weight: 800;
-    transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all 0.2s ease;
 }
 
 .cell:hover:empty {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.1);
     transform: scale(1.02);
 }
 
 .cell.x-cell {
     color: var(--accent-cyan);
     text-shadow: var(--shadow-glow);
-    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .cell.o-cell {
     color: var(--accent-pink);
     text-shadow: var(--shadow-pink);
-    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.cell.winning-cell {
-    background: rgba(255, 255, 255, 0.12);
-    transform: scale(1.04);
 }
 
 .cell.winning-cell.x-cell {
-    background: rgba(102, 252, 241, 0.2);
+    background: rgba(76, 201, 240, 0.25);
     border-color: var(--accent-cyan);
-    box-shadow: 0 0 20px rgba(102, 252, 241, 0.4);
+    box-shadow: 0 0 25px rgba(76, 201, 240, 0.5);
 }
 
 .cell.winning-cell.o-cell {
-    background: rgba(255, 0, 127, 0.2);
+    background: rgba(247, 37, 133, 0.25);
     border-color: var(--accent-pink);
-    box-shadow: 0 0 20px rgba(255, 0, 127, 0.4);
-}
-
-@keyframes popIn {
-    0% { transform: scale(0.6); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
+    box-shadow: 0 0 25px rgba(247, 37, 133, 0.5);
 }
 
 .game-controls {
@@ -446,14 +508,14 @@ body {
     gap: 8px;
 }
 
-/* Modal / Popup */
+/* Modal Overlay */
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.85);
     backdrop-filter: blur(8px);
     z-index: 100;
     display: flex;
@@ -462,27 +524,40 @@ body {
 }
 
 .modal {
-    width: 90%;
-    max-width: 400px;
-    padding: 35px 24px;
-    border: 1px solid var(--accent-cyan);
-    box-shadow: 0 0 30px rgba(102, 252, 241, 0.3);
+    width: 92%;
+    max-width: 420px;
+    padding: 40px 24px;
+    border: 3px solid var(--accent-cyan);
+    box-shadow: 0 0 35px rgba(76, 201, 240, 0.4);
 }
 
 .modal h2 {
-    font-size: 2rem;
+    font-size: 2.2rem;
+    font-weight: 700;
     margin-bottom: 12px;
 }
 
 .modal p {
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 20px;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.modal-set-summary {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--accent-gold);
     margin-bottom: 25px;
-    font-size: 1.15rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 10px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .modal-buttons {
     display: flex;
-    gap: 12px;
+    gap: 15px;
 }
 
 .modal-buttons .btn {
@@ -506,12 +581,9 @@ body {
 
 @media (max-width: 380px) {
     .glow-text {
-        font-size: 2.2rem;
+        font-size: 2.4rem;
     }
     .cell {
-        font-size: 2.5rem;
-    }
-    .scoreboard-row {
-        padding: 10px;
+        font-size: 3.2rem;
     }
 }

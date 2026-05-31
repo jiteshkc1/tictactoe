@@ -1,28 +1,29 @@
 /**
- * टिक टैक ग्लो - मोबाइल के खिलाफ
- * Core Hindi Gameplay Engine with TTS and Stats Persistence
+ * टिक टैक ग्लो - मोबाइल के खिलाफ (बुजुर्गों के अनुकूल)
+ * Senior-Friendly Hindi Engine with Custom TTS, Step-by-Step Flow, and Career Sets
  */
 
 // Game State Object
 const state = {
     playerName: '',
     stats: {
-        played: 0,
-        won: 0
+        setsPlayed: 0,
+        setsWonPlayer: 0,
+        setsWonMobile: 0
     },
-    gamesInSession: 0, // Used to alternate starting player
-    difficulty: 'easy', // 'easy', 'medium', 'hard'
-    board: Array(9).fill(''),
     
-    // Symbols for current round
+    // Series stats for the current 5-game set
+    currentGameInSet: 1, // 1 to 5
+    setScores: { player: 0, mobile: 0, ties: 0 },
+    setRoundHistory: [], // Array tracking outcomes: 'player', 'mobile', 'tie'
+    
+    // Symbols & turn tracking for active game
     playerSymbol: 'X',
     mobileSymbol: 'O',
-    startingSymbol: 'X', // Whichever symbol goes first ('X')
-    currentPlayer: 'X',  // Tracks current turn symbol ('X' or 'O')
-    
-    sessionScores: { player: 0, mobile: 0 },
+    currentPlayer: 'X',
     isGameOver: false,
-    soundEnabled: true
+    soundEnabled: true,
+    difficulty: 'easy'
 };
 
 const WINNING_COMBOS = [
@@ -44,67 +45,66 @@ function playSound(type) {
 
         if (type === 'move') {
             osc.type = 'sine';
-            osc.frequency.setValueAtTime(440, now);
-            osc.frequency.exponentialRampToValueAtTime(880, now + 0.1);
-            gainNode.gain.setValueAtTime(0.1, now);
+            osc.frequency.setValueAtTime(400, now);
+            osc.frequency.exponentialRampToValueAtTime(800, now + 0.1);
+            gainNode.gain.setValueAtTime(0.12, now);
             gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
             osc.start(now);
             osc.stop(now + 0.12);
         } else if (type === 'win') {
             osc.type = 'triangle';
             const notes = [261.63, 329.63, 392.00, 523.25];
-            gainNode.gain.setValueAtTime(0.15, now);
-            gainNode.gain.linearRampToValueAtTime(0.15, now + 0.3);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
+            gainNode.gain.setValueAtTime(0.18, now);
+            gainNode.gain.linearRampToValueAtTime(0.18, now + 0.35);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.6);
             notes.forEach((freq, index) => {
-                osc.frequency.setValueAtTime(freq, now + (index * 0.08));
+                osc.frequency.setValueAtTime(freq, now + (index * 0.1));
             });
             osc.start(now);
-            osc.stop(now + 0.5);
+            osc.stop(now + 0.6);
         } else if (type === 'lose') {
             osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(300, now);
-            osc.frequency.linearRampToValueAtTime(150, now + 0.4);
-            gainNode.gain.setValueAtTime(0.1, now);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+            osc.frequency.setValueAtTime(280, now);
+            osc.frequency.linearRampToValueAtTime(140, now + 0.5);
+            gainNode.gain.setValueAtTime(0.12, now);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
             osc.start(now);
-            osc.stop(now + 0.4);
+            osc.stop(now + 0.5);
         } else if (type === 'tie') {
             osc.type = 'sine';
-            osc.frequency.setValueAtTime(330, now);
-            osc.frequency.linearRampToValueAtTime(220, now + 0.25);
+            osc.frequency.setValueAtTime(300, now);
+            osc.frequency.linearRampToValueAtTime(200, now + 0.3);
             gainNode.gain.setValueAtTime(0.1, now);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
             osc.start(now);
-            osc.stop(now + 0.3);
+            osc.stop(now + 0.35);
         } else if (type === 'error') {
             osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(150, now);
-            gainNode.gain.setValueAtTime(0.1, now);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+            osc.frequency.setValueAtTime(140, now);
+            gainNode.gain.setValueAtTime(0.12, now);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
             osc.start(now);
-            osc.stop(now + 0.2);
+            osc.stop(now + 0.25);
         }
     } catch (e) {
         console.error(e);
     }
 }
 
-// Text-to-Speech Engine (Hindi)
+// Text-to-Speech Engine (Hindi - Elder Friendly)
 function speakHindi(text, callback) {
     if (!state.soundEnabled) {
-        if (callback) setTimeout(callback, 2000);
+        if (callback) setTimeout(callback, 2200);
         return;
     }
     
-    // Stop any ongoing speech
     window.speechSynthesis.cancel();
     
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'hi-IN';
-    utterance.rate = 0.95; // Slightly slower for clarity
+    utterance.rate = 0.82; // Slower speed specifically adjusted for 65+ age readability
+    utterance.pitch = 1.0;
     
-    // Try to find a native Hindi voice
     const voices = window.speechSynthesis.getVoices();
     const hindiVoice = voices.find(voice => voice.lang.includes('hi') || voice.lang.includes('IN'));
     if (hindiVoice) {
@@ -128,13 +128,14 @@ function speakHindi(text, callback) {
 
     window.speechSynthesis.speak(utterance);
 
-    // Fallback: If TTS speech API freezes or fails to trigger onend
+    // Dynamic safety timeout: wait duration roughly based on text length
+    const safetyTimeoutDuration = Math.max(3000, text.length * 90);
     setTimeout(() => {
         if (!callbackCalled) {
             callbackCalled = true;
             if (callback) callback();
         }
-    }, 4000);
+    }, safetyTimeoutDuration);
 }
 
 // DOM Elements
@@ -145,42 +146,57 @@ const modalContainer = document.getElementById('modal-container');
 const profileCreation = document.getElementById('profile-creation');
 const profileDashboard = document.getElementById('profile-dashboard');
 const playerNameInput = document.getElementById('player-name-input');
+const btnSkipName = document.getElementById('btn-skip-name');
 const welcomeBackMsg = document.getElementById('welcome-back-msg');
 const statsPlayed = document.getElementById('stats-played');
 const statsWon = document.getElementById('stats-won');
 const btnChangeProfile = document.getElementById('btn-change-profile');
 
 const btnStartGame = document.getElementById('btn-start-game');
+const difficultyPickerScreen = document.getElementById('difficulty-picker-screen');
+const btnBackToStart = document.getElementById('btn-back-to-start');
+
 const boardEl = document.getElementById('board');
 const cells = document.querySelectorAll('.cell');
 const gameStatusEl = document.getElementById('game-status');
 const btnQuitGame = document.getElementById('btn-quit-game');
 const btnToggleSound = document.getElementById('btn-toggle-sound');
 
+const careerSetTracker = document.getElementById('career-set-tracker');
+const careerSetsPlayer = document.getElementById('career-sets-player');
+const careerSetsMobile = document.getElementById('career-sets-mobile');
+
 const gameP1Name = document.getElementById('game-p1-name');
 const scorePlayer = document.getElementById('score-player');
 const scoreMobile = document.getElementById('score-mobile');
+const currentGameNumber = document.getElementById('current-game-number');
+const roundIndicatorsContainer = document.getElementById('round-indicators');
 
 const modalTitle = document.getElementById('modal-title');
 const modalMessage = document.getElementById('modal-message');
+const modalSetSummary = document.getElementById('modal-set-summary');
 const btnModalYes = document.getElementById('btn-modal-yes');
 const btnModalNo = document.getElementById('btn-modal-no');
 
-// Initial Load Handler
+// Initial setup
 window.addEventListener('DOMContentLoaded', () => {
     loadProfile();
-    
-    // Trigger getVoices load (some browsers load voices asynchronously)
     if (window.speechSynthesis.onvoiceschanged !== undefined) {
         window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
     }
 });
 
-// Event Listeners
-btnStartGame.addEventListener('click', handleStartClick);
-btnChangeProfile.addEventListener('click', handleProfileChange);
+// Event Triggers
+btnStartGame.addEventListener('click', transitionToDifficultyPicker);
+btnBackToStart.addEventListener('click', backToStartScreen);
+btnSkipName.addEventListener('click', () => {
+    playerNameInput.value = 'खिलाड़ी जी';
+    transitionToDifficultyPicker();
+});
+
+btnChangeProfile.addEventListener('click', handleProfileReset);
 btnQuitGame.addEventListener('click', quitToMainMenu);
-btnModalYes.addEventListener('click', startNewGameRound);
+btnModalYes.addEventListener('click', startNewSet);
 btnModalNo.addEventListener('click', () => {
     modalContainer.classList.add('hidden');
     quitToMainMenu();
@@ -196,12 +212,13 @@ btnToggleSound.addEventListener('click', () => {
     }
 });
 
-// Difficulty Picker Event Listeners
-document.querySelectorAll('.difficulty-buttons .btn-sm').forEach(btn => {
+// Difficulty Picker Selectors
+document.querySelectorAll('.difficulty-options .btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
-        document.querySelectorAll('.difficulty-buttons .btn-sm').forEach(b => b.classList.remove('active'));
-        e.target.classList.add('active');
-        state.difficulty = e.target.getAttribute('data-diff');
+        // Find closest button in case icon is clicked
+        const targetBtn = e.target.closest('.btn');
+        state.difficulty = targetBtn.getAttribute('data-diff');
+        launchGameSet();
     });
 });
 
@@ -212,101 +229,122 @@ cells.forEach(cell => {
     });
 });
 
-// Profile Management
+// Profile Managers
 function loadProfile() {
     const savedName = localStorage.getItem('glow_player_name');
-    const savedPlayed = parseInt(localStorage.getItem('glow_stats_played') || '0');
-    const savedWon = parseInt(localStorage.getItem('glow_stats_won') || '0');
+    const savedSetsPlayed = parseInt(localStorage.getItem('glow_career_sets_played') || '0');
+    const savedSetsWon = parseInt(localStorage.getItem('glow_career_sets_won_player') || '0');
+    const savedSetsWonMobile = parseInt(localStorage.getItem('glow_career_sets_won_mobile') || '0');
+
+    state.stats.setsPlayed = savedSetsPlayed;
+    state.stats.setsWonPlayer = savedSetsWon;
+    state.stats.setsWonMobile = savedSetsWonMobile;
 
     if (savedName) {
         state.playerName = savedName;
-        state.stats.played = savedPlayed;
-        state.stats.won = savedWon;
-        
-        // Show Dashboard
         profileCreation.classList.add('hidden');
         profileDashboard.classList.remove('hidden');
         welcomeBackMsg.textContent = `नमस्ते, ${savedName}!`;
-        statsPlayed.textContent = savedPlayed;
-        statsWon.textContent = savedWon;
+        statsPlayed.textContent = savedSetsPlayed;
+        statsWon.textContent = savedSetsWon;
         playerNameInput.value = savedName;
     } else {
-        // Show Creation Input
         profileCreation.classList.remove('hidden');
         profileDashboard.classList.add('hidden');
     }
 }
 
-function handleStartClick() {
-    // If first time, grab name
-    if (!state.playerName) {
-        const nameVal = playerNameInput.value.trim();
-        if (!nameVal) {
-            alert('कृपया आगे बढ़ने के लिए अपना नाम लिखें।');
-            return;
-        }
-        state.playerName = nameVal;
-        state.stats.played = 0;
-        state.stats.won = 0;
-        saveProfile();
-    }
-    
-    // Start game session
-    state.gamesInSession = 0;
-    state.sessionScores = { player: 0, mobile: 0 };
-    
-    // Setup UI and launch
-    startScreen.classList.add('hidden');
-    gameScreen.classList.remove('hidden');
-    modalContainer.classList.add('hidden');
-    
-    gameP1Name.textContent = state.playerName;
-    scorePlayer.textContent = '0';
-    scoreMobile.textContent = '0';
-    
-    startNewGameRound();
+function saveProfile() {
+    localStorage.setItem('glow_player_name', state.playerName);
+    localStorage.setItem('glow_career_sets_played', state.stats.setsPlayed);
+    localStorage.setItem('glow_career_sets_won_player', state.stats.setsWonPlayer);
+    localStorage.setItem('glow_career_sets_won_mobile', state.stats.setsWonMobile);
 }
 
-function handleProfileChange() {
+function handleProfileReset() {
     state.playerName = '';
     localStorage.removeItem('glow_player_name');
     loadProfile();
 }
 
-function saveProfile() {
-    localStorage.setItem('glow_player_name', state.playerName);
-    localStorage.setItem('glow_stats_played', state.stats.played);
-    localStorage.setItem('glow_stats_won', state.stats.won);
+// Navigation Flows
+function transitionToDifficultyPicker() {
+    if (!state.playerName) {
+        const inputName = playerNameInput.value.trim();
+        if (!inputName) {
+            alert('कृपया आगे बढ़ने के लिए अपना नाम लिखें जी।');
+            return;
+        }
+        state.playerName = inputName;
+        saveProfile();
+    }
+    
+    // Toggle start sub-screens
+    profileCreation.classList.add('hidden');
+    profileDashboard.classList.add('hidden');
+    btnStartGame.classList.add('hidden');
+    difficultyPickerScreen.classList.remove('hidden');
 }
 
-// Gameplay Loop
-function startNewGameRound() {
+function backToStartScreen() {
+    difficultyPickerScreen.classList.add('hidden');
+    btnStartGame.classList.remove('hidden');
+    loadProfile();
+}
+
+function launchGameSet() {
+    // Initialize current set stats
+    state.currentGameInSet = 1;
+    state.setScores = { player: 0, mobile: 0, ties: 0 };
+    state.setRoundHistory = [];
+
+    // UI screen switches
+    startScreen.classList.add('hidden');
+    gameScreen.classList.remove('hidden');
     modalContainer.classList.add('hidden');
+    
+    gameP1Name.textContent = state.playerName;
+    
+    updateSetScoreboards();
+    startNewGameRound();
+}
+
+function startNewSet() {
+    modalContainer.classList.add('hidden');
+    launchGameSet();
+}
+
+// Gameplay Round controller
+function startNewGameRound() {
     state.board = Array(9).fill('');
     state.isGameOver = false;
+
+    // Alternate starting player for each game index in the set
+    // Game 1, 3, 5 -> Player starts first (Player = X, Mobile = O)
+    // Game 2, 4 -> Mobile starts first (Mobile = X, Player = O)
+    const isPlayerFirst = (state.currentGameInSet % 2 !== 0);
     
-    // Alternate starting player
-    // Even games (0, 2, 4...) -> Player starts first (Player is 'X', Mobile is 'O')
-    // Odd games (1, 3, 5...) -> Mobile starts first (Mobile is 'X', Player is 'O')
-    if (state.gamesInSession % 2 === 0) {
+    if (isPlayerFirst) {
         state.playerSymbol = 'X';
         state.mobileSymbol = 'O';
-        state.currentPlayer = 'X'; // Player starts
+        state.currentPlayer = 'X'; // Player starting
     } else {
         state.playerSymbol = 'O';
         state.mobileSymbol = 'X';
-        state.currentPlayer = 'X'; // Mobile starts
+        state.currentPlayer = 'X'; // Mobile starting
     }
-    
-    // Clear Board GUI
+
+    // Reset Cell GUI
     cells.forEach(cell => {
         cell.className = 'cell';
         cell.textContent = '';
     });
-    
+
     updateTurnStatus();
-    
-    // If Mobile starts first ('X'), trigger Mobile's move after 1 second delay
+    updateRoundIndicators();
+    updateSetScoreboards();
+
+    // If Mobile starts, run move after 1 second delay
     if (state.currentPlayer === state.mobileSymbol) {
         setTimeout(makeMobileMove, 1000);
     }
@@ -317,39 +355,78 @@ function updateTurnStatus() {
     
     const isPlayerTurn = (state.currentPlayer === state.playerSymbol);
     if (isPlayerTurn) {
-        gameStatusEl.textContent = 'आपकी बारी (X)';
+        gameStatusEl.textContent = `आपकी बारी (${state.playerSymbol}) जी`;
         gameStatusEl.className = 'game-status turn-p1';
     } else {
-        gameStatusEl.textContent = 'मोबाइल की बारी...';
+        gameStatusEl.textContent = 'मोबाइल की बारी है जी...';
         gameStatusEl.className = 'game-status turn-p2';
     }
+}
+
+function updateSetScoreboards() {
+    // Current set scores
+    scorePlayer.textContent = state.setScores.player;
+    scoreMobile.textContent = state.setScores.mobile;
+    currentGameNumber.textContent = `${state.currentGameInSet} / 5`;
+
+    // Career overall set scores
+    careerSetsPlayer.textContent = state.stats.setsWonPlayer;
+    careerSetsMobile.textContent = state.stats.setsWonMobile;
+    
+    // Hide career scores bar on top if they haven't completed any set yet
+    if (state.stats.setsPlayed === 0) {
+        careerSetTracker.classList.add('hidden');
+    } else {
+        careerSetTracker.classList.remove('hidden');
+    }
+}
+
+function updateRoundIndicators() {
+    const dots = roundIndicatorsContainer.querySelectorAll('.dot');
+    dots.forEach((dot, index) => {
+        const roundNum = index + 1;
+        dot.className = 'dot';
+        
+        if (roundNum === state.currentGameInSet) {
+            dot.classList.add('active-round');
+        }
+        
+        const outcome = state.setRoundHistory[index];
+        if (outcome === 'player') {
+            dot.classList.add('win-p1');
+        } else if (outcome === 'mobile') {
+            dot.classList.add('win-p2');
+        } else if (outcome === 'tie') {
+            dot.classList.add('tie');
+        }
+    });
 }
 
 function handlePlayerMove(index) {
     if (state.isGameOver || state.board[index] !== '') return;
     
-    // Verify it is Player's turn
     if (state.currentPlayer !== state.playerSymbol) {
         playSound('error');
         return;
     }
-    
-    executeMove(index, state.playerSymbol);
-    
+
+    executeGameMove(index, state.playerSymbol);
+
     if (!state.isGameOver) {
-        // Shift turn to Mobile and trigger Mobile's move after 1 second
+        // Mobile's turn after 1 second delay
         setTimeout(makeMobileMove, 1000);
     }
 }
 
-function executeMove(index, symbol) {
+function executeGameMove(index, symbol) {
     state.board[index] = symbol;
     
     const cell = cells[index];
     cell.textContent = symbol;
     cell.classList.add(symbol === 'X' ? 'x-cell' : 'o-cell');
-    playSound('move');
     
+    playSound('move');
+
     if (checkWin(symbol)) {
         handleGameEnd(symbol === state.playerSymbol ? 'player' : 'mobile');
     } else if (state.board.every(c => c !== '')) {
@@ -372,59 +449,97 @@ function checkWin(symbol) {
     });
 }
 
+// Round completion (End of 1 of the 5 games)
 function handleGameEnd(winner) {
     state.isGameOver = true;
-    state.gamesInSession++;
-    state.stats.played++;
-    
-    let announcementText = '';
+    state.setRoundHistory.push(winner);
+
+    let speechText = '';
     
     if (winner === 'player') {
-        state.sessionScores.player++;
-        state.stats.won++;
-        scorePlayer.textContent = state.sessionScores.player;
+        state.setScores.player++;
         playSound('win');
-        
-        gameStatusEl.textContent = 'आप जीत गए!';
+        gameStatusEl.textContent = 'आप जीत गए जी!';
         gameStatusEl.className = 'game-status turn-p1';
-        announcementText = `बधाई हो ${state.playerName}! आप जीत गए!`;
+        speechText = `बधाई हो ${state.playerName} जी! आप यह गेम जीत गए हैं!`;
     } else if (winner === 'mobile') {
-        state.sessionScores.mobile++;
-        scoreMobile.textContent = state.sessionScores.mobile;
+        state.setScores.mobile++;
         playSound('lose');
-        
-        gameStatusEl.textContent = 'मोबाइल जीत गया!';
+        gameStatusEl.textContent = 'मोबाइल जीत गया जी!';
         gameStatusEl.className = 'game-status turn-p2';
-        announcementText = `मोबाइल जीत गया। बेहतर किस्मत अगली बार।`;
+        speechText = `यह गेम मोबाइल जी ने जीत लिया है।`;
     } else {
+        state.setScores.ties++;
         playSound('tie');
-        
-        gameStatusEl.textContent = 'मैच ड्रॉ रहा!';
+        gameStatusEl.textContent = 'गेम ड्रॉ रहा जी!';
         gameStatusEl.className = 'game-status';
-        announcementText = `यह मैच ड्रॉ रहा!`;
+        speechText = `यह गेम ड्रॉ रहा जी।`;
     }
-    
-    saveProfile();
-    
-    // Announce result via Text-to-Speech, then trigger the play again modal
+
+    updateSetScoreboards();
+    updateRoundIndicators();
+
+    // Check progress of 5-game set
     setTimeout(() => {
-        speakHindi(announcementText, () => {
-            // Show the modal
-            modalTitle.textContent = winner === 'player' ? 'बधाई हो!' : 'मैच समाप्त';
-            modalMessage.textContent = 'क्या आप एक और मैच खेलना चाहते हैं?';
-            modalContainer.classList.remove('hidden');
+        speakHindi(speechText, () => {
+            if (state.currentGameInSet < 5) {
+                // Auto-advance to next game in the set
+                state.currentGameInSet++;
+                setTimeout(startNewGameRound, 1000);
+            } else {
+                // Set is completed! Calculate overall set winner
+                handleSetCompleted();
+            }
         });
-    }, 600);
+    }, 500);
+}
+
+// Set completion logic (after 5 rounds)
+function handleSetCompleted() {
+    state.stats.setsPlayed++;
+    
+    let setWinner = '';
+    let speechAnnouncement = '';
+    
+    if (state.setScores.player > state.setScores.mobile) {
+        setWinner = 'player';
+        state.stats.setsWonPlayer++;
+        speechAnnouncement = `बधाई हो ${state.playerName} जी! आपने यह पूरा सेट जीत लिया है! बहुत ही बढ़िया खेले!`;
+    } else if (state.setScores.mobile > state.setScores.player) {
+        setWinner = 'mobile';
+        state.stats.setsWonMobile++;
+        speechAnnouncement = `यह सेट मोबाइल जी ने जीत लिया है। कोई बात नहीं जी, अगली बार आप जरूर जीतेंगे।`;
+    } else {
+        setWinner = 'tie';
+        speechAnnouncement = `यह पूरा सेट ड्रॉ रहा जी! दोनों ने बहुत अच्छा मुकाबला किया!`;
+    }
+
+    saveProfile();
+    updateSetScoreboards();
+
+    // Final set announcement speech, then launch set over modal
+    speakHindi(speechAnnouncement, () => {
+        modalTitle.textContent = setWinner === 'player' ? 'बधाई हो जी!' : 'सेट समाप्त जी';
+        modalMessage.textContent = 'क्या आप मोबाइल के साथ एक और सेट खेलना चाहते हैं जी?';
+        
+        // Show career set scores in the dialog modal
+        modalSetSummary.textContent = `कुल स्कोर: आप ${state.stats.setsWonPlayer} - ${state.stats.setsWonMobile} मोबाइल`;
+        modalContainer.classList.remove('hidden');
+    });
 }
 
 function quitToMainMenu() {
     startScreen.classList.remove('hidden');
     gameScreen.classList.add('hidden');
     modalContainer.classList.add('hidden');
+    
+    // Toggle start sub-screens back to main dashboard
+    difficultyPickerScreen.classList.add('hidden');
+    btnStartGame.classList.remove('hidden');
     loadProfile();
 }
 
-// --- MOBILE (AI) DECISION MAKING ---
+// --- MOBILE (AI) STRATEGY DECISIONS ---
 
 function makeMobileMove() {
     if (state.isGameOver) return;
@@ -435,15 +550,15 @@ function makeMobileMove() {
     if (state.difficulty === 'easy') {
         move = getEasyMove();
     } else if (state.difficulty === 'medium') {
-        // Medium: 60% standard minimax, 40% random
+        // Medium: 60% Minimax accuracy
         move = probability < 0.60 ? getBeatableMove() : getEasyMove();
     } else {
-        // Hard (but not unbeatable): 85% standard minimax, 15% random
+        // Hard: 85% Minimax accuracy (leaving 15% room for mistakes so it is beatable)
         move = probability < 0.85 ? getBeatableMove() : getEasyMove();
     }
     
     if (move !== undefined && move !== -1) {
-        executeMove(move, state.mobileSymbol);
+        executeGameMove(move, state.mobileSymbol);
     }
 }
 
@@ -456,7 +571,6 @@ function getEasyMove() {
 }
 
 function getBeatableMove() {
-    // Calculates minimax best move
     let bestVal = -Infinity;
     let bestMove = -1;
     
