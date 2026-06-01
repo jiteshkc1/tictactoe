@@ -282,15 +282,14 @@ function startNewGameRound() {
 
     // Alternate starting player (Game 1, 3, 5 -> Player first; Game 2, 4 -> Mobile first)
     const isPlayerFirst = (state.currentGameInSet % 2 !== 0);
-    
+    // Player is ALWAYS 'X', Mobile is ALWAYS 'O'
+    state.playerSymbol = 'X';
+    state.mobileSymbol = 'O';
+
     if (isPlayerFirst) {
-        state.playerSymbol = 'X';
-        state.mobileSymbol = 'O';
-        state.currentPlayer = 'X';
+        state.currentPlayer = 'X'; // Player starts
     } else {
-        state.playerSymbol = 'O';
-        state.mobileSymbol = 'X';
-        state.currentPlayer = 'X';
+        state.currentPlayer = 'O'; // Mobile starts
     }
 
     cells.forEach(cell => {
