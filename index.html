@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>टिक टैक ग्लो - मोबाइल के खिलाफ</title>
+    <title>Tic Tac Toe - By Jitesh</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,7 +17,8 @@
     <div class="container">
         <!-- Start Screen / Setup Profile -->
         <div id="start-screen" class="card fade-in">
-            <h1 class="glow-text">टिक टैक ग्लो</h1>
+            <h1 class="glow-text main-title">Tic Tac Toe</h1>
+            <p class="credits-text">By Jitesh</p>
             <p class="subtitle">मोबाइल के खिलाफ मुकाबला</p>
 
             <!-- First Time Profile Creation (Step 1) -->
@@ -110,7 +111,7 @@
             <!-- Game Status / Turn Indicator -->
             <div class="game-status" id="game-status">आपकी बारी</div>
 
-            <!-- Tic Tac Toe Grid -->
+            <!-- Tic Tac Toe Grid with Animated Winner Overlays -->
             <div class="board-container">
                 <div class="board" id="board">
                     <div class="cell" data-index="0"></div>
@@ -123,6 +124,23 @@
                     <div class="cell" data-index="7"></div>
                     <div class="cell" data-index="8"></div>
                 </div>
+                
+                <!-- Game Over Animated Overlay Banner -->
+                <div id="game-winner-overlay" class="game-overlay-banner hidden">
+                    <div class="overlay-content">
+                        <span id="game-overlay-text">जीत गए जी!</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grand Set Winner Celebration Overlay -->
+            <div id="set-winner-overlay" class="set-overlay-celebration hidden">
+                <div class="set-overlay-content">
+                    <div class="set-icon-container" id="set-celebration-icon">🏆</div>
+                    <h2 id="set-overlay-title">बधाई हो जी!</h2>
+                    <p id="set-overlay-message">आपने यह सेट जीत लिया!</p>
+                </div>
+                <div class="overlay-confetti" id="overlay-confetti"></div>
             </div>
 
             <!-- Controls -->
