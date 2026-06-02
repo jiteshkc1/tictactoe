@@ -188,6 +188,10 @@ cells.forEach(cell => {
         const index = parseInt(e.target.getAttribute('data-index'));
         handlePlayerMove(index);
     });
+    cell.addEventListener('pointerdown', (e) => {
+        const index = parseInt(e.currentTarget.getAttribute('data-index'));
+        focusWatcherOnCell(index);
+    });
 });
 
 boardEl.addEventListener('pointermove', trackWatcherEyes);
@@ -286,6 +290,7 @@ function startNewGameRound() {
     // Hide overlays
     gameWinnerOverlay.classList.add('hidden');
     resetWatcherEyes();
+    setWatcherMood('neutral');
 
     // Alternate starting player (Game 1, 3, 5 -> Player first; Game 2, 4 -> Mobile first)
     const isPlayerFirst = (state.currentGameInSet % 2 !== 0);
@@ -373,6 +378,7 @@ function handlePlayerMove(index) {
         return;
     }
 
+    focusWatcherOnCell(index);
     executeGameMove(index, state.playerSymbol);
 
     if (!state.isGameOver) {
@@ -381,6 +387,7 @@ function handlePlayerMove(index) {
 }
 
 function executeGameMove(index, symbol) {
+    focusWatcherOnCell(index);
     state.board[index] = symbol;
     
     const cell = cells[index];
@@ -422,6 +429,7 @@ function handleGameEnd(winner) {
     if (winner === 'player') {
         state.setScores.player++;
         playSound('win');
+        setWatcherMood('happy');
         gameStatusEl.textContent = 'आप जीत गए!';
         gameStatusEl.className = 'game-status turn-p1';
         overlayText = 'आप जीत गए! 🎉';
@@ -429,6 +437,7 @@ function handleGameEnd(winner) {
     } else if (winner === 'mobile') {
         state.setScores.mobile++;
         playSound('lose');
+        setWatcherMood('sad');
         gameStatusEl.textContent = 'मोबाइल जीत गया!';
         gameStatusEl.className = 'game-status turn-p2';
         overlayText = 'मोबाइल जीत गया!';
@@ -436,6 +445,7 @@ function handleGameEnd(winner) {
     } else {
         state.setScores.ties++;
         playSound('tie');
+        setWatcherMood('neutral');
         gameStatusEl.textContent = 'गेम ड्रॉ रहा!';
         gameStatusEl.className = 'game-status';
         overlayText = 'गेम ड्रॉ रहा!';
@@ -544,6 +554,7 @@ function quitToMainMenu() {
     gameWinnerOverlay.classList.add('hidden');
     setWinnerOverlay.classList.add('hidden');
     resetWatcherEyes();
+    setWatcherMood('neutral');
     
     difficultyPickerScreen.classList.add('hidden');
     btnStartGame.classList.remove('hidden');
@@ -551,11 +562,37 @@ function quitToMainMenu() {
 }
 
 function trackWatcherEyes(event) {
+    if (event.pointerType && event.pointerType !== 'mouse' && event.pointerType !== 'pen') {
+        return;
+    }
+    moveWatcherEyesToPoint(event.clientX, event.clientY);
+}
+
+function resetWatcherEyes() {
+    watcherEyes.forEach((eye, index) => {
+        const driftX = index === 0 ? -1.5 : 1.5;
+        eye.querySelector('.pupil').style.transform =
+            `translate(calc(-50% + ${driftX}px), -50%)`;
+    });
+}
+
+function focusWatcherOnCell(index) {
+    const cell = cells[index];
+    if (!cell) return;
+
+    const rect = cell.getBoundingClientRect();
+    moveWatcherEyesToPoint(
+        rect.left + (rect.width / 2),
+        rect.top + (rect.height / 2)
+    );
+}
+
+function moveWatcherEyesToPoint(targetX, targetY) {
     const rect = boardEl.getBoundingClientRect();
     const centerX = rect.left + (rect.width / 2);
     const centerY = rect.top + (rect.height / 2);
-    const deltaX = (event.clientX - centerX) / (rect.width / 2);
-    const deltaY = (event.clientY - centerY) / (rect.height / 2);
+    const deltaX = (targetX - centerX) / (rect.width / 2);
+    const deltaY = (targetY - centerY) / (rect.height / 2);
     const offsetX = clamp(deltaX * 8, -8, 8);
     const offsetY = clamp(deltaY * 6, -6, 6);
 
@@ -566,12 +603,9 @@ function trackWatcherEyes(event) {
     });
 }
 
-function resetWatcherEyes() {
-    watcherEyes.forEach((eye, index) => {
-        const driftX = index === 0 ? -1.5 : 1.5;
-        eye.querySelector('.pupil').style.transform =
-            `translate(calc(-50% + ${driftX}px), -50%)`;
-    });
+function setWatcherMood(mood) {
+    watcherBanner.classList.remove('mood-neutral', 'mood-happy', 'mood-sad');
+    watcherBanner.classList.add(`mood-${mood}`);
 }
 
 function clamp(value, min, max) {
