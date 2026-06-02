@@ -124,6 +124,8 @@ const scorePlayer = document.getElementById('score-player');
 const scoreMobile = document.getElementById('score-mobile');
 const currentGameNumber = document.getElementById('current-game-number');
 const roundIndicatorsContainer = document.getElementById('round-indicators');
+const watcherBanner = document.getElementById('watcher-banner');
+const watcherEyes = document.querySelectorAll('[data-eye]');
 
 // Winner Overlays Elements
 const gameWinnerOverlay = document.getElementById('game-winner-overlay');
@@ -187,6 +189,10 @@ cells.forEach(cell => {
         handlePlayerMove(index);
     });
 });
+
+boardEl.addEventListener('pointermove', trackWatcherEyes);
+boardEl.addEventListener('pointerleave', resetWatcherEyes);
+gameScreen.addEventListener('pointerleave', resetWatcherEyes);
 
 // Profile Managers
 function loadProfile() {
@@ -279,6 +285,7 @@ function startNewGameRound() {
 
     // Hide overlays
     gameWinnerOverlay.classList.add('hidden');
+    resetWatcherEyes();
 
     // Alternate starting player (Game 1, 3, 5 -> Player first; Game 2, 4 -> Mobile first)
     const isPlayerFirst = (state.currentGameInSet % 2 !== 0);
@@ -311,6 +318,8 @@ function updateTurnStatus() {
     if (state.isGameOver) return;
     
     const isPlayerTurn = (state.currentPlayer === state.playerSymbol);
+    watcherBanner.classList.toggle('player-turn', isPlayerTurn);
+    watcherBanner.classList.toggle('mobile-turn', !isPlayerTurn);
     if (isPlayerTurn) {
         gameStatusEl.textContent = `आपकी बारी (${state.playerSymbol}) जी`;
         gameStatusEl.className = 'game-status turn-p1';
@@ -534,10 +543,39 @@ function quitToMainMenu() {
     modalContainer.classList.add('hidden');
     gameWinnerOverlay.classList.add('hidden');
     setWinnerOverlay.classList.add('hidden');
+    resetWatcherEyes();
     
     difficultyPickerScreen.classList.add('hidden');
     btnStartGame.classList.remove('hidden');
     loadProfile();
+}
+
+function trackWatcherEyes(event) {
+    const rect = boardEl.getBoundingClientRect();
+    const centerX = rect.left + (rect.width / 2);
+    const centerY = rect.top + (rect.height / 2);
+    const deltaX = (event.clientX - centerX) / (rect.width / 2);
+    const deltaY = (event.clientY - centerY) / (rect.height / 2);
+    const offsetX = clamp(deltaX * 8, -8, 8);
+    const offsetY = clamp(deltaY * 6, -6, 6);
+
+    watcherEyes.forEach((eye, index) => {
+        const driftX = index === 0 ? -1.5 : 1.5;
+        eye.querySelector('.pupil').style.transform =
+            `translate(calc(-50% + ${offsetX + driftX}px), calc(-50% + ${offsetY}px))`;
+    });
+}
+
+function resetWatcherEyes() {
+    watcherEyes.forEach((eye, index) => {
+        const driftX = index === 0 ? -1.5 : 1.5;
+        eye.querySelector('.pupil').style.transform =
+            `translate(calc(-50% + ${driftX}px), -50%)`;
+    });
+}
+
+function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
 }
 
 // --- MOBILE (AI) DECISION MAKING ---
