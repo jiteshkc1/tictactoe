@@ -1,8 +1,8 @@
 :root {
     --bg-color: #0d0221;
     --bg-secondary: #1a0533;
-    --card-bg: rgba(255, 248, 231, 0.06);
-    --card-border: rgba(255, 201, 110, 0.26);
+    --card-bg: rgba(21, 8, 41, 0.82);
+    --card-border: rgba(255, 201, 110, 0.2);
     --border-color: rgba(255, 201, 110, 0.3);
     --text-primary: #fff8e7;
     --text-secondary: rgba(255, 248, 231, 0.76);
@@ -18,11 +18,11 @@
     --danger: #f44336;
     --gradient-saffron: linear-gradient(135deg, #ff9933 0%, #ff6b00 100%);
     --gradient-gold: linear-gradient(135deg, #ffd700 0%, #f5c842 100%);
-    --gradient-card: linear-gradient(135deg, rgba(255, 153, 51, 0.12), rgba(255, 215, 0, 0.05));
+    --gradient-card: linear-gradient(135deg, rgba(255, 153, 51, 0.08), rgba(255, 215, 0, 0.025));
     --gradient-bg:
-        radial-gradient(circle at top, rgba(255, 187, 92, 0.16) 0%, rgba(26, 5, 51, 0) 28%),
-        radial-gradient(circle at bottom, rgba(255, 215, 0, 0.08) 0%, rgba(13, 2, 33, 0) 32%),
-        linear-gradient(180deg, #1a0736 0%, #120427 48%, #0d0221 100%);
+        radial-gradient(circle at top, rgba(255, 187, 92, 0.1) 0%, rgba(26, 5, 51, 0) 24%),
+        radial-gradient(circle at bottom, rgba(255, 215, 0, 0.04) 0%, rgba(13, 2, 33, 0) 26%),
+        linear-gradient(180deg, #150531 0%, #100324 50%, #0b0219 100%);
     --shadow-glow: 0 0 18px rgba(255, 172, 68, 0.55);
     --shadow-pink: 0 0 18px rgba(255, 215, 0, 0.35);
 }
@@ -66,9 +66,9 @@ body {
     height: 100%;
     z-index: -1;
     background-image:
-        radial-gradient(circle at 20% 30%, rgba(255, 153, 51, 0.12) 0%, transparent 40%),
-        radial-gradient(circle at 80% 70%, rgba(255, 215, 0, 0.1) 0%, transparent 45%),
-        radial-gradient(circle at 50% 10%, rgba(255, 248, 231, 0.04) 0%, transparent 25%);
+        radial-gradient(circle at 20% 30%, rgba(255, 153, 51, 0.08) 0%, transparent 36%),
+        radial-gradient(circle at 80% 70%, rgba(255, 215, 0, 0.06) 0%, transparent 40%),
+        radial-gradient(circle at 50% 10%, rgba(255, 248, 231, 0.02) 0%, transparent 22%);
     background-size: cover;
 }
 
@@ -82,7 +82,7 @@ body {
 
 .card {
     background:
-        linear-gradient(180deg, rgba(255, 248, 231, 0.08), rgba(255, 248, 231, 0.04)),
+        linear-gradient(180deg, rgba(255, 248, 231, 0.03), rgba(255, 248, 231, 0.01)),
         var(--gradient-card);
     border: 1px solid var(--card-border);
     border-radius: 24px;
@@ -176,7 +176,7 @@ body {
 .input-group input {
     width: 100%;
     padding: 16px 22px;
-    background: rgba(255, 248, 231, 0.06);
+    background: rgba(255, 248, 231, 0.03);
     border: 2px solid rgba(255, 201, 110, 0.22);
     border-radius: 14px;
     color: var(--text-primary);
@@ -193,7 +193,7 @@ body {
 
 /* Profile Dashboard */
 .dashboard-box {
-    background: rgba(255, 248, 231, 0.05);
+    background: rgba(255, 248, 231, 0.03);
     border-radius: 18px;
     padding: 18px;
     margin-bottom: 25px;
@@ -217,7 +217,7 @@ body {
 }
 
 .stat-card {
-    background: rgba(255, 248, 231, 0.04);
+    background: rgba(255, 248, 231, 0.025);
     border: 1px solid rgba(255, 201, 110, 0.14);
     border-radius: 12px;
     padding: 10px 20px;
@@ -298,13 +298,13 @@ body {
 }
 
 .btn-secondary {
-    background: rgba(255, 248, 231, 0.08);
+    background: rgba(255, 248, 231, 0.05);
     color: var(--text-primary);
     border: 2px solid rgba(255, 201, 110, 0.18);
 }
 
 .btn-secondary:hover {
-    background: rgba(255, 248, 231, 0.14);
+    background: rgba(255, 248, 231, 0.09);
 }
 
 .btn-easy {
@@ -359,7 +359,7 @@ body {
     font-size: 1.3rem;
     font-weight: 700;
     color: var(--accent-gold-soft);
-    background: rgba(255, 153, 51, 0.08);
+    background: rgba(255, 153, 51, 0.05);
     border: 1px dashed rgba(255, 215, 0, 0.55);
     border-radius: 12px;
     padding: 8px 16px;
@@ -373,7 +373,7 @@ body {
     justify-content: space-between;
     align-items: center;
     gap: 10px;
-    background: rgba(255, 248, 231, 0.05);
+    background: rgba(255, 248, 231, 0.03);
     border-radius: 18px;
     padding: 14px 18px;
     margin-bottom: 15px;
@@ -440,7 +440,7 @@ body {
 
 /* Set Score indicators */
 .set-visual-indicators {
-    background: rgba(255, 248, 231, 0.04);
+    background: rgba(255, 248, 231, 0.025);
     padding: 12px;
     border-radius: 14px;
     margin-bottom: 18px;
@@ -464,7 +464,7 @@ body {
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    background: rgba(255, 248, 231, 0.06);
+    background: rgba(255, 248, 231, 0.035);
     border: 2px solid rgba(255, 201, 110, 0.16);
     display: flex;
     align-items: center;
@@ -530,7 +530,7 @@ body {
     border-radius: 18px;
     background:
         radial-gradient(circle at top, rgba(255, 153, 51, 0.16), transparent 55%),
-        linear-gradient(135deg, rgba(255, 248, 231, 0.08), rgba(255, 248, 231, 0.03));
+        linear-gradient(135deg, rgba(255, 248, 231, 0.04), rgba(255, 248, 231, 0.015));
     border: 1px solid rgba(255, 201, 110, 0.16);
     box-shadow: inset 0 1px 0 rgba(255, 248, 231, 0.05);
     position: relative;
@@ -565,7 +565,7 @@ body {
 .eye-shell {
     padding: 6px;
     border-radius: 999px;
-    background: rgba(255, 248, 231, 0.08);
+    background: rgba(255, 248, 231, 0.045);
     animation: shellFloat 3.8s ease-in-out infinite;
 }
 
@@ -683,8 +683,8 @@ body {
 
 .cell {
     background:
-        radial-gradient(circle at 50% 35%, rgba(255, 248, 231, 0.08), rgba(255, 248, 231, 0.02) 60%),
-        rgba(255, 248, 231, 0.03);
+        radial-gradient(circle at 50% 35%, rgba(255, 248, 231, 0.04), rgba(255, 248, 231, 0.01) 60%),
+        rgba(255, 248, 231, 0.02);
     border: 2px solid rgba(255, 201, 110, 0.14);
     border-radius: 20px;
     cursor: pointer;
@@ -697,7 +697,7 @@ body {
 }
 
 .cell:hover:empty {
-    background: rgba(255, 248, 231, 0.1);
+    background: rgba(255, 248, 231, 0.06);
     transform: scale(1.02);
 }
 
@@ -949,7 +949,7 @@ body {
     font-weight: 700;
     color: var(--accent-gold-soft);
     margin-bottom: 25px;
-    background: rgba(255, 248, 231, 0.05);
+    background: rgba(255, 248, 231, 0.03);
     padding: 10px;
     border-radius: 12px;
     border: 1px solid rgba(255, 201, 110, 0.14);
