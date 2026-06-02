@@ -152,7 +152,7 @@ window.addEventListener('DOMContentLoaded', () => {
 btnStartGame.addEventListener('click', transitionToDifficultyPicker);
 btnBackToStart.addEventListener('click', backToStartScreen);
 btnSkipName.addEventListener('click', () => {
-    playerNameInput.value = 'खिलाड़ी जी';
+    playerNameInput.value = 'खिलाड़ी';
     transitionToDifficultyPicker();
 });
 
@@ -209,7 +209,7 @@ function loadProfile() {
         state.playerName = savedName;
         profileCreation.classList.add('hidden');
         profileDashboard.classList.remove('hidden');
-        welcomeBackMsg.textContent = `नमस्ते, ${savedName}!`;
+        welcomeBackMsg.textContent = `नमस्ते, ${formatPlayerName(savedName)}!`;
         statsPlayed.textContent = savedSetsPlayed;
         statsWon.textContent = savedSetsWon;
         playerNameInput.value = savedName;
@@ -237,7 +237,7 @@ function transitionToDifficultyPicker() {
     if (!state.playerName) {
         const inputName = playerNameInput.value.trim();
         if (!inputName) {
-            alert('कृपया आगे बढ़ने के लिए अपना नाम लिखें जी।');
+            alert('कृपया आगे बढ़ने के लिए अपना नाम लिखें।');
             return;
         }
         state.playerName = inputName;
@@ -267,7 +267,7 @@ function launchGameSet() {
     gameWinnerOverlay.classList.add('hidden');
     setWinnerOverlay.classList.add('hidden');
     
-    gameP1Name.textContent = state.playerName;
+    gameP1Name.textContent = formatPlayerName(state.playerName);
     
     updateSetScoreboards();
     startNewGameRound();
@@ -321,10 +321,10 @@ function updateTurnStatus() {
     watcherBanner.classList.toggle('player-turn', isPlayerTurn);
     watcherBanner.classList.toggle('mobile-turn', !isPlayerTurn);
     if (isPlayerTurn) {
-        gameStatusEl.textContent = `आपकी बारी (${state.playerSymbol}) जी`;
+        gameStatusEl.textContent = `आपकी बारी (${state.playerSymbol})`;
         gameStatusEl.className = 'game-status turn-p1';
     } else {
-        gameStatusEl.textContent = 'मोबाइल की बारी है जी...';
+        gameStatusEl.textContent = 'मोबाइल की बारी है...';
         gameStatusEl.className = 'game-status turn-p2';
     }
 }
@@ -422,23 +422,23 @@ function handleGameEnd(winner) {
     if (winner === 'player') {
         state.setScores.player++;
         playSound('win');
-        gameStatusEl.textContent = 'आप जीत गए जी!';
+        gameStatusEl.textContent = 'आप जीत गए!';
         gameStatusEl.className = 'game-status turn-p1';
-        overlayText = 'आप जीत गए जी! 🎉';
+        overlayText = 'आप जीत गए! 🎉';
         overlayClass = 'overlay-win-p1';
     } else if (winner === 'mobile') {
         state.setScores.mobile++;
         playSound('lose');
-        gameStatusEl.textContent = 'मोबाइल जीत गया जी!';
+        gameStatusEl.textContent = 'मोबाइल जीत गया!';
         gameStatusEl.className = 'game-status turn-p2';
-        overlayText = 'मोबाइल जीत गया जी!';
+        overlayText = 'मोबाइल जीत गया!';
         overlayClass = 'overlay-win-p2';
     } else {
         state.setScores.ties++;
         playSound('tie');
-        gameStatusEl.textContent = 'गेम ड्रॉ रहा जी!';
+        gameStatusEl.textContent = 'गेम ड्रॉ रहा!';
         gameStatusEl.className = 'game-status';
-        overlayText = 'गेम ड्रॉ रहा जी!';
+        overlayText = 'गेम ड्रॉ रहा!';
         overlayClass = 'overlay-tie';
     }
 
@@ -476,7 +476,7 @@ function handleSetCompleted() {
         setWinner = 'player';
         state.stats.setsWonPlayer++;
         titleText = 'शानदार जीत! 🏆';
-        messageText = `बधाई हो जी! आपने मोबाइल को हराकर सेट जीत लिया है!`;
+        messageText = 'बधाई हो! आपने मोबाइल को हराकर सेट जीत लिया है!';
         icon = '🏆';
         iconClass = 'set-icon-spin';
         triggerOverlayConfetti();
@@ -484,13 +484,13 @@ function handleSetCompleted() {
         setWinner = 'mobile';
         state.stats.setsWonMobile++;
         titleText = 'सेट समाप्त!';
-        messageText = 'यह सेट मोबाइल जी ने जीत लिया है। फिर कोशिश करें!';
+        messageText = 'यह सेट मोबाइल ने जीत लिया है। फिर कोशिश करें!';
         icon = '📱';
         iconClass = 'set-icon-shake';
     } else {
         setWinner = 'tie';
         titleText = 'कड़ा मुकाबला!';
-        messageText = 'यह पूरा सेट ड्रॉ रहा जी! दोनों ने शानदार खेल दिखाया!';
+        messageText = 'यह पूरा सेट ड्रॉ रहा! दोनों ने शानदार खेल दिखाया!';
         icon = '🤝';
         iconClass = 'set-icon-spin';
     }
@@ -509,8 +509,8 @@ function handleSetCompleted() {
     // Transition to set-restart modal prompt after 3.5 seconds
     setTimeout(() => {
         setWinnerOverlay.classList.add('hidden');
-        modalTitle.textContent = setWinner === 'player' ? 'बधाई हो जी!' : 'सेट समाप्त जी';
-        modalMessage.textContent = 'क्या आप मोबाइल के साथ एक और सेट खेलना चाहते हैं जी?';
+        modalTitle.textContent = setWinner === 'player' ? 'बधाई हो!' : 'सेट समाप्त';
+        modalMessage.textContent = 'क्या आप मोबाइल के साथ एक और सेट खेलना चाहते हैं?';
         modalSetSummary.textContent = `कुल स्कोर: आप ${state.stats.setsWonPlayer} - ${state.stats.setsWonMobile} मोबाइल`;
         modalContainer.classList.remove('hidden');
     }, 3500);
@@ -576,6 +576,11 @@ function resetWatcherEyes() {
 
 function clamp(value, min, max) {
     return Math.min(Math.max(value, min), max);
+}
+
+function formatPlayerName(name) {
+    const trimmedName = name.trim();
+    return trimmedName.endsWith('जी') ? trimmedName : `${trimmedName} जी`;
 }
 
 // --- MOBILE (AI) DECISION MAKING ---

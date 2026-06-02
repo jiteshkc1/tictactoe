@@ -7,7 +7,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;600;700&family=Outfit:wght@400;600;800&family=Noto+Sans+Devanagari:wght@400;600;700&family=Tiro+Devanagari+Hindi:ital@0;1&display=swap" rel="stylesheet">
     <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
@@ -21,9 +21,17 @@
             <p class="credits-text">By Jitesh</p>
             <p class="subtitle">मोबाइल के खिलाफ मुकाबला</p>
 
+            <div class="mythic-symbols" aria-hidden="true">
+                <span>🐚</span>
+                <span>🪔</span>
+                <span>🪈</span>
+                <span>🪔</span>
+                <span>🐚</span>
+            </div>
+
             <!-- First Time Profile Creation (Step 1) -->
             <div id="profile-creation" class="form-container">
-                <p class="form-instruction">खेलने के लिए अपना नाम लिखें जी:</p>
+                <p class="form-instruction">खेलने के लिए अपना नाम लिखें:</p>
                 <div class="input-group">
                     <input type="text" id="player-name-input" placeholder="यहाँ अपना नाम लिखें..." maxlength="15">
                 </div>
@@ -34,7 +42,7 @@
 
             <!-- Profile Dashboard (Hidden on first load) -->
             <div id="profile-dashboard" class="dashboard-box hidden">
-                <h3 id="welcome-back-msg">नमस्ते जी!</h3>
+                <h3 id="welcome-back-msg">नमस्ते!</h3>
                 <div class="career-stats">
                     <div class="stat-card">
                         <span class="stat-val" id="stats-played">0</span>
@@ -55,7 +63,7 @@
 
             <!-- Difficulty Picker (Step 2 - Hidden by default) -->
             <div id="difficulty-picker-screen" class="difficulty-picker-container hidden fade-in">
-                <h2 class="section-title">खेल का स्तर चुनें जी:</h2>
+                <h2 class="section-title">खेल का स्तर चुनें:</h2>
                 <div class="difficulty-options">
                     <button class="btn btn-giant btn-easy" data-diff="easy">
                         <i class="fa-solid fa-face-smile"></i> आसान स्तर
@@ -111,11 +119,13 @@
             <!-- Game Status / Turn Indicator -->
             <div class="game-status" id="game-status">आपकी बारी</div>
 
+            <div class="sacred-divider" aria-hidden="true">
+                <span>🐚</span>
+                <span>🪔</span>
+                <span>🪈</span>
+            </div>
+
             <div class="watcher-banner" id="watcher-banner" aria-hidden="true">
-                <div class="watcher-copy">
-                    <span class="watcher-label">Someone is watching the match</span>
-                    <span class="watcher-subtext">The eyes follow the board while you play.</span>
-                </div>
                 <div class="watcher-eyes" id="watcher-eyes">
                     <div class="eye-shell">
                         <div class="eye" data-eye>
@@ -147,7 +157,7 @@
                 <!-- Game Over Animated Overlay Banner -->
                 <div id="game-winner-overlay" class="game-overlay-banner hidden">
                     <div class="overlay-content">
-                        <span id="game-overlay-text">जीत गए जी!</span>
+                        <span id="game-overlay-text">जीत गए!</span>
                     </div>
                 </div>
             </div>
@@ -156,7 +166,7 @@
             <div id="set-winner-overlay" class="set-overlay-celebration hidden">
                 <div class="set-overlay-content">
                     <div class="set-icon-container" id="set-celebration-icon">🏆</div>
-                    <h2 id="set-overlay-title">बधाई हो जी!</h2>
+                    <h2 id="set-overlay-title">बधाई हो!</h2>
                     <p id="set-overlay-message">आपने यह सेट जीत लिया!</p>
                 </div>
                 <div class="overlay-confetti" id="overlay-confetti"></div>
@@ -175,7 +185,7 @@
         <div id="modal-container" class="modal-overlay hidden">
             <div class="modal card">
                 <h2 id="modal-title" class="glow-text">सेट समाप्त</h2>
-                <p id="modal-message">क्या आप एक और सेट खेलना चाहते हैं जी?</p>
+                <p id="modal-message">क्या आप एक और सेट खेलना चाहते हैं?</p>
                 
                 <!-- Display Set Win/Loss Log inside modal -->
                 <div class="modal-set-summary" id="modal-set-summary">
